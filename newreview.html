@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a New Review</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input, textarea, button {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 600px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+     
+        button {
+            font-size: 1em;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #f0f0f0;
+        }
+
+
+    </style>
+</head>
+<body>
+    <h1>Add a New Music Review</h1>
+    <form id="reviewForm">
+        <input type="text" id="title" placeholder="Song Title" required />
+        <input type="text" id="artist" placeholder="Artist" required />
+        <textarea id="review" placeholder="Write your review" rows="4" required></textarea>
+        <input type="number" id="rating" placeholder="Rating (1-5)" min="1" max="5" required />
+        <button type="submit">Submit Review</button>
+        <button onclick="window.location.href='/'">Back to Home</button>
+
+    </form>
+
+    <script>
+        document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const artist = document.getElementById('artist').value;
+            const review = document.getElementById('review').value;
+            const rating = document.getElementById('rating').value;
+
+            const response = await fetch('/newreview', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, artist, review, rating })
+            });
+
+            if (response.ok) {
+                alert('Review added successfully!');
+                document.getElementById('reviewForm').reset();
+            } else {
+                alert('Failed to add review.');
+            }
+        });
+    </script>
+</body>
+</html>
