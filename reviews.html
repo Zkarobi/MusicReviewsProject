@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Reviews</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input, textarea, button {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 600px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    
+        button {
+            font-size: 1em;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #f0f0f0;
+        }
+
+
+    </style>
+</head>
+<body>
+    <button onclick="window.location.href='/'">Back to Home</button>
+    <h1>All Music Reviews</h1>
+    <table id="reviewsTable">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Review</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        async function loadReviews() {
+            const response = await fetch('/api/reviews');
+            const reviews = await response.json();
+            const reviewsTable = document.getElementById('reviewsTable').querySelector('tbody');
+            reviewsTable.innerHTML = '';
+            reviews.forEach(review => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${review.title}</td>
+                    <td>${review.artist}</td>
+                    <td>${review.review}</td>
+                    <td>${review.rating}</td>
+                `;
+                reviewsTable.appendChild(row);
+            });
+        }
+
+        // Load reviews on page load
+        loadReviews();
+    </script>
+</body>
+</html>
